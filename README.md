@@ -2,7 +2,7 @@
 
 This package allows you to easily incorporate SBB maps into your Flutter application.
 
-![Main Flutter Example](example/gallery/main.png){width=66%}
+<p align="center"><img src="example/gallery/main.png" alt="iOS and Android example showcases" width="66%"></p>
 
 #### Table Of Contents
 
@@ -138,7 +138,7 @@ Tested with the latest (stable channel) and oldest supported (3.19.6) Flutter SD
 
 #### Example App
 
-![Example App Icon](example/gallery/app_icon/icon.png){width=5%}
+<p align="left"><img src="example/gallery/app_icon/icon.png" alt="Icon of the example app" width="5%"></p>
 
 The **SBB Karten** demo application is available both in the SBB Enterprise Playstore (Android) and in the managed iOS SBB Store (Ivanti MobileIron).
 
@@ -213,7 +213,7 @@ Widget build(BuildContext context) {
       </pre>
       </div>
     </td>
-    <td style='text-align: center;'><img src="example/gallery/standard_map_example.png" width='33%'></td>
+    <td style='text-align: center;'><img src="example/gallery/standard_map_example.png" width='50%'></td>
   </tr>
   <tr>
     <th>Plain Map</th>
@@ -244,7 +244,7 @@ Widget build(BuildContext context) {
       </pre>
       </div>
     </td>
-    <td style='text-align: center;'><img src="example/gallery/plain_map_example.png" width='33%'></td>
+    <td style='text-align: center;'><img src="example/gallery/plain_map_example.png" width='50%'></td>
   </tr>
     <tr>
     <th>Camera Movement</th>
@@ -309,7 +309,7 @@ Widget build(BuildContext context) {
       </pre>
       </div>
     </td>
-    <td style='text-align: center;'><img src="example/gallery/camera_example.png" width='33%'></td>
+    <td style='text-align: center;'><img src="example/gallery/camera_example.png" width='50%'></td>
   </tr>
     </tr>
     <tr>
@@ -364,7 +364,7 @@ Widget build(BuildContext context) {
       </pre>
       </div>
     </td>
-    <td style='text-align: center;'><img src="example/gallery/custom_ui_example.png" width='33%'></td>
+    <td style='text-align: center;'><img src="example/gallery/custom_ui_example.png" width='50%'></td>
   </tr>
     <tr>
     <th>POI</th>
@@ -415,7 +415,7 @@ Widget build(BuildContext context) {
       </pre>
       </div>
     </td>
-    <td style='text-align: center;'><img src="example/gallery/poi_example.png" width='33%'></td>
+    <td style='text-align: center;'><img src="example/gallery/poi_example.png" width='50%'></td>
   </tr>
 </table>
 
