@@ -51,6 +51,7 @@ jobs:
 
       - name: Create Signing Report
         run: ./gradlew signingReport
+        working-directory: ./android
 
       - name: Upload appbundle as artifact
         uses: actions/upload-artifact@v4
