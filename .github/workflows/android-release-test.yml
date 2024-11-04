@@ -37,7 +37,7 @@ jobs:
       - name: Write Keystore from base64 encoded secret.
         uses: timheuer/base64-to-file@v1.2
         with:
-          fileName: "fdsm_keystore.jks"
+          fileName: "sbb_maps_flutter_example_keystore.jks"
           fileDir: "./example/android/app/keys"
           encodedString: ${{ secrets.ANDROID_KEYSTORE_64 }}
 
@@ -45,8 +45,8 @@ jobs:
       - run: dart run build_runner build --delete-conflicting-outputs
       - run: flutter build appbundle --no-pub
         env:
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          SIGNING_KEYSTORE_PASSWORD: ${{ secrets.SIGNING_KEYSTORE_PASSWORD }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
 
       - name: Create Signing Report
