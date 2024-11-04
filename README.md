@@ -2,7 +2,7 @@
 
 This package allows you to easily incorporate SBB maps into your Flutter application.
 
-<p align="center"><img src="example/gallery/main.png" alt="iOS and Android example showcases" width="66%"></p>
+<p align="center"><img src="example/gallery/main.png" alt="iOS and Android example showcases" width="90%"></p>
 
 #### Table Of Contents
 
@@ -10,13 +10,39 @@ This package allows you to easily incorporate SBB maps into your Flutter applica
       - [Table Of Contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Getting Started](#getting-started)
-    - [Supported platforms](#supported-platforms)
-    - [Precondition](#precondition)
+      - [Supported platforms](#supported-platforms)
+      - [Precondition](#precondition)
+      - [Installation](#installation)
+      - [In code usage](#in-code-usage)
+          - [API key](#api-key)
+          - [Adding the map](#adding-the-map)
+          - [Accessing user location](#accessing-user-location)
+          - [Focusing on user location when building map](#focusing-on-user-location-when-building-map)
+      - [Tested deployment platforms](#tested-deployment-platforms)
+      - [Example App](#example-app)
   - [Documentation](#documentation)
+      - [Features](#features)
+      - [Custom Map Properties](#custom-map-properties)
+    - [Gallery and Examples](#gallery-and-examples)
+      - [Standard Map](#standard-map)
+      - [Plain Map](#plain-map)
+      - [Camera Movement](#camera-movement)
+      - [Custom UI](#custom-ui)
+      - [ROKAS Point of Interests](#rokas-point-of-interests)
+      - [Custom UI](#custom-ui-1)
+      - [Map Properties](#map-properties)
+      - [Annotations](#annotations)
+      - [Track device location on map build](#track-device-location-on-map-build)
+    - [Read on](#read-on)
   - [License](#license)
   - [Contributing](#contributing)
+    - [Maintainer](#maintainer)
+    - [Contributors](#contributors)
   - [Coding Standards](#coding-standards)
   - [Code of Conduct](#code-of-conduct)
+  - [Caveats, limitations and known bugs\*](#caveats-limitations-and-known-bugs)
+    - [Limitations](#limitations)
+    - [Known Bugs](#known-bugs)
 
 <a id="Introduction"></a>
 
@@ -88,11 +114,9 @@ asking the user for permissions. See the package for detailed instructions on ac
 <table style='width:100%'>
   <tr>
     <th>iOS</th>
-    <th>Android</th>
   </tr>
   <tr>
     <td>Add this to your `ios/Runner/Info.plist` file.</td>
-    <td>Add these to your `android/app/src/main/AndroidManifest.xml`<br>If both are specified, the geolocator plugin uses the `ACCESS_FINE_LOCATION` setting.</td>
   </tr>
   <tr>
     <td>
@@ -105,6 +129,14 @@ asking the user for permissions. See the package for detailed instructions on ac
       </pre>
     </div>
     </td>
+  </tr>
+  <tr>
+    <th>Android</th>
+  </tr>
+  <tr>
+    <td>Add these to your `android/app/src/main/AndroidManifest.xml`<br>If both are specified, the geolocator plugin uses the `ACCESS_FINE_LOCATION` setting.</td>
+  </tr>
+  <tr>
     <td>
     <div>
       <pre>
@@ -185,242 +217,41 @@ const SBBMapProperties({
 
 ### Gallery and Examples
 
-<table style='width:100%'>
-  <tr>
-    <th>Standard Map</th>
-    <th></th>
-  </tr>
-  <tr>
-    <td>The default SBB map with ROKAS styling.</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>
-    <div>
-      <pre>
-        <code>
-@override
-Widget build(BuildContext context) {
-  // api key must be in JOURNEY_MAPS_API_KEY ENV_VAR
-  return Scaffold(
-    appBar: const SBBHeader(title: 'Standard'),
-    body: SBBMap(
-      isMyLocationEnabled: true,
-    ),
-  );
-}
-        </code>
-      </pre>
-      </div>
-    </td>
-    <td style='text-align: center;'><img src="example/gallery/standard_map_example.png" width='50%'></td>
-  </tr>
-  <tr>
-    <th>Plain Map</th>
-    <th></th>
-  </tr>
-  <tr>
-    <td>How to disable all UI components while using ROKAS Map styling.</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>
-    <div>
-      <pre>
-        <code>
-@override
-Widget build(BuildContext context) {
-  final mapStyler = SBBRokasMapStyler.noAerial(apiKey: YOUR_API_KEY);
-  return Scaffold(
-    appBar: const SBBHeader(title: 'Plain'),
-    body: SBBMap(
-      mapStyler: mapStyler,
-      isMyLocationEnabled: false,
-      isFloorSwitchingEnabled: false,
-    ),
-  );
-}
-        </code>
-      </pre>
-      </div>
-    </td>
-    <td style='text-align: center;'><img src="example/gallery/plain_map_example.png" width='50%'></td>
-  </tr>
-    <tr>
-    <th>Camera Movement</th>
-    <th></th>
-  </tr>
-  <tr>
-    <td>How to programmatically control camera movement.</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>
-    <div>
-      <pre>
-        <code>
-@override
-Widget build(BuildContext context) {
-  // api key must be in JOURNEY_MAPS_API_KEY ENV_VAR
-  return Scaffold(
-    appBar: const SBBHeader(title: 'Camera'),
-    body: SafeArea(
-      child: Column(
-        children: [
-          Expanded(
-            child: SBBMap(
-              initialCameraPosition: const SBBCameraPosition(
-                target: LatLng(46.947456, 7.451123), // Bern
-                zoom: 8.0,
-              ),
-              isMyLocationEnabled: true,
-              onMapCreated: (controller) =>
-                  mapController.complete(controller),
-            ),
-          ),
-          SBBGroup(
-            padding: const EdgeInsets.symmetric(
-                horizontal: sbbDefaultSpacing / 2,
-                vertical: sbbDefaultSpacing / 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                SBBTertiaryButtonSmall(
-                  label: 'Bern',
-                  icon: SBBIcons.house_small,
-                  onPressed: () => mapController.future.then(
-                      (c) => c.animateCameraMove(cameraUpdate: _kCameraBern)),
-                ),
-                SBBTertiaryButtonSmall(
-                  label: 'Zurich',
-                  icon: SBBIcons.station_small,
-                  onPressed: () => mapController.future.then((c) =>
-                      c.animateCameraMove(cameraUpdate: _kCameraZurich)),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    ),
-  );
-}
-        </code>
-      </pre>
-      </div>
-    </td>
-    <td style='text-align: center;'><img src="example/gallery/camera_example.png" width='50%'></td>
-  </tr>
-    </tr>
-    <tr>
-    <th>Custom UI</th>
-    <th></th>
-  </tr>
-  <tr>
-    <td>How to customize the map ui using the builder.</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>
-    <div>
-      <pre>
-        <code>
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: const SBBHeader(title: 'Custom UI'),
-    body: SBBMap(
-      mapStyler: mapStyler,
-      isMyLocationEnabled: true,
-      isFloorSwitchingEnabled: true,
-      builder: (context) => const Align(
-        alignment: Alignment.topRight,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            ThemeSegmentedButton(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(sbbDefaultSpacing),
-                  child: SBBMapStyleSwitcher(),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(sbbDefaultSpacing),
-                  child: SBBMapMyLocationButton(),
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
-    ),
-  );
-}
-        </code>
-      </pre>
-      </div>
-    </td>
-    <td style='text-align: center;'><img src="example/gallery/custom_ui_example.png" width='50%'></td>
-  </tr>
-    <tr>
-    <th>POI</th>
-    <th></th>
-  </tr>
-  <tr>
-    <td>How to react to POI selection.</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>
-    <div>
-      <pre>
-        <code>
-@override
-Widget build(BuildContext context) {
-  final mapStyler = SBBRokasMapStyler.full(
-    apiKey: Env.journeyMapsApiKey,
-    isDarkMode: Provider.of<ThemeProvider>(context).isDark,
-  );
-  return Scaffold(
-    appBar: const SBBHeader(title: 'POI'),
-    body: SBBMap(
-      initialCameraPosition: const SBBCameraPosition(
-        target: LatLng(46.947456, 7.451123), // Bern
-        zoom: 15.0,
-      ),
-      isMyLocationEnabled: true,
-      mapStyler: mapStyler,
-      poiSettings: SBBMapPOISettings(
-        isPointOfInterestVisible: true,
-        onPoiControllerAvailable: (poiController) =>
-            _poiController.complete(poiController),
-        onPoiSelected: (poi) => showSBBModalSheet(
-          context: context,
-          title: poi.name,
-          child: const SizedBox(height: 64),
-        ).then(
-          (_) => _poiController.future.then(
-            (c) => c.deselectPointOfInterest(),
-          ),
-        ),
-      ),
-    ),
-  );
-}
-        </code>
-      </pre>
-      </div>
-    </td>
-    <td style='text-align: center;'><img src="example/gallery/poi_example.png" width='50%'></td>
-  </tr>
-</table>
+#### Standard Map
+The default SBB map with ROKAS styling (see [standard_map_route.dart](example/lib/routes/standard_map_route.dart)).
+<p align="center"><img src="example/gallery/standard_map_example.png" width='25%'>
+
+#### Plain Map
+How to disable all UI components while using ROKAS Map styling. (see [plain_map_route.dart](example/lib/routes/plain_map_route.dart)).
+<p align="center"><img src="example/gallery/plain_map_example.png" width='25%'>
+
+#### Camera Movement
+Programmatic control over camera movement (see [camera_route.dart](example/lib/routes/camera_route.dart)).
+<p align="center"><img src="example/gallery/camera_example.png" width='25%'>
+
+#### Custom UI
+Customizing the map UI using the builder (see [custom_ui_route.dart](example/lib/routes/custom_ui_route.dart)).
+<p align="center"><img src="example/gallery/custom_ui_example.png" width='25%'>
+
+#### ROKAS Point of Interests
+Displaying and interacting ROKAS POIs (see [poi_route.dart](example/lib/routes/poi_route.dart)).
+<p align="center"><img src="example/gallery/poi_example.png" width='25%'>
+
+#### Custom UI
+Customizing the map UI using the builder (see [custom_ui_route.dart](example/lib/routes/custom_ui_route.dart)).
+<p align="center"><img src="example/gallery/custom_ui_example.png" width='25%'>
+
+#### Map Properties
+Using map properties (see [map_properties_route.dart](example/lib/routes/map_properties_route.dart)).
+
+#### Annotations
+Displaying and interacting with custom annotations (see [display_annotations_route.dart](example/lib/routes/display_annotations_route.dart)).
+
+#### Track device location on map build
+Displaying user device location on build (see [track_device_location_route.dart](example/lib/routes/track_device_location_route.dart)).
 
 
-Futher documentation files:
+### Read on
 
 - [CODING_STANDARDS.md](CODING_STANDARDS.md)
 - [CONTRIBUTING.md](CONTRIBUTING.md)
@@ -432,7 +263,7 @@ Futher documentation files:
 
 ## License
 
-This project is licensed under [Apache 2.0](LICENSE.md).
+This project is licensed under [MIT](LICENSE.md).
 
 <a id="Contributing"></a>
 
@@ -450,16 +281,15 @@ This repository includes a [CONTRIBUTING.md](CONTRIBUTING.md) file that outlines
 
 <a id="coding-standards"></a>
 
-## Coding Standards
+### Coding Standards
 
 This repository includes a [CODING_STANDARDS.md](CODING_STANDARDS.md) file that outlines the coding standards that you should follow when contributing to the project.
 
 <a id="code-of-conduct"></a>
 
-## Code of Conduct
+### Code of Conduct
 
-To ensure that your project is a welcoming and inclusive environment for all contributors, you should establish a good [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
-
+See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
 ## Caveats, limitations and known bugs*
 
