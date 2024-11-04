@@ -51,7 +51,7 @@ jobs:
 
       - name: Create Signing Report
         run: ./gradlew signingReport
-        working-directory: ./android
+        working-directory: ./example/android
 
       - name: Upload appbundle as artifact
         uses: actions/upload-artifact@v4
@@ -65,8 +65,8 @@ jobs:
         with:
           fileName: "google_playstore_service_account.json"
           fileDir: "./example/android/app/keys"
-          encodedString: ${{ secrets.GOOGLE_PLAYSTORE_SERVICE_ACCOUNT_64 }}
+          encodedString: ${{ secrets.ANDROID_KEYSTORE_64 }}
 
       - name: Release using Google Play Publisher
         run: ./gradlew publishBundle --artifact-dir ../build/app/outputs/bundle/release/
-        working-directory: ./android
+        working-directory: ./example/android
