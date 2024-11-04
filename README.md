@@ -5,7 +5,6 @@ This package allows you to easily incorporate SBB maps into your Flutter applica
 <p align="center"><img src="example/gallery/main.png" alt="iOS and Android example showcases" width="90%"></p>
 
 #### Table Of Contents
-
 - [Journey Maps Client Flutter](#journey-maps-client-flutter)
       - [Table Of Contents](#table-of-contents)
   - [Introduction](#introduction)
@@ -38,8 +37,8 @@ This package allows you to easily incorporate SBB maps into your Flutter applica
   - [Contributing](#contributing)
     - [Maintainer](#maintainer)
     - [Contributors](#contributors)
-  - [Coding Standards](#coding-standards)
-  - [Code of Conduct](#code-of-conduct)
+    - [Coding Standards](#coding-standards)
+    - [Code of Conduct](#code-of-conduct)
   - [Caveats, limitations and known bugs\*](#caveats-limitations-and-known-bugs)
     - [Limitations](#limitations)
     - [Known Bugs](#known-bugs)
