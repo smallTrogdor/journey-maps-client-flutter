@@ -111,44 +111,24 @@ SBBMap(
 
 This package uses the [geolocator](https://pub.dev/packages/geolocator) flutter plugin for accessing the device location and
 asking the user for permissions. See the package for detailed instructions on accessing the device location. In short:
-<table style='width:100%'>
-  <tr>
-    <th>iOS</th>
-  </tr>
-  <tr>
-    <td>Add this to your `ios/Runner/Info.plist` file.</td>
-  </tr>
-  <tr>
-    <td>
-    <div>
-      <pre>
-        <code>
-&lt;key&gt;NSLocationWhenInUseUsageDescription&lt;/key&gt;
-&lt;string&gt;YOUR DESCRIPTION WHY YOU NEED ACCESS TO THE MAP&lt;/string&gt;
-        </code>
-      </pre>
-    </div>
-    </td>
-  </tr>
-  <tr>
-    <th>Android</th>
-  </tr>
-  <tr>
-    <td>Add these to your `android/app/src/main/AndroidManifest.xml`<br>If both are specified, the geolocator plugin uses the `ACCESS_FINE_LOCATION` setting.</td>
-  </tr>
-  <tr>
-    <td>
-    <div>
-      <pre>
-        <code>
-&lt;uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /&gt;
-&lt;uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /&gt;
-        </code>
-      </pre>
-    </div>
-    </td>
-  </tr>
-</table>
+
+*iOS*
+
+Add this to your `Info.plist` file.
+
+```
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>YOUR DESCRIPTION WHY YOU NEED ACCESS TO THE MAP<string>
+```
+
+*Android*
+
+Add these to your `AndroidManifest.xml` file. If both are specified, the geolocator plugin uses the `ACCESS_FINE_LOCATION` setting.
+
+```
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+```
 
 ###### Focusing on user location when building map
 
@@ -283,7 +263,7 @@ This repository includes a [CONTRIBUTING.md](CONTRIBUTING.md) file that outlines
 
 ### Coding Standards
 
-This repository includes a [CODING_STANDARDS.md](CODING_STANDARDS.md) file that outlines the coding standards that you should follow when contributing to the project.
+See [CODING_STANDARDS.md](CODING_STANDARDS.md).
 
 <a id="code-of-conduct"></a>
 
