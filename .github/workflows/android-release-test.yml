@@ -65,7 +65,7 @@ jobs:
         with:
           fileName: "google_playstore_service_account.json"
           fileDir: "./example/android/app/keys"
-          encodedString: ${{ secrets.ANDROID_KEYSTORE_64 }}
+          encodedString: ${{ secrets.GOOGLE_PLAYSTORE_SERVICE_ACCOUNT_BASE64 }}
 
       - name: Release using Google Play Publisher
         run: ./gradlew publishBundle --artifact-dir ../build/app/outputs/bundle/release/

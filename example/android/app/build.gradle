@@ -82,7 +82,7 @@ android {
 }
 
 play {
-    serviceAccountCredentials.set(file(PLAY_STORE_SERVICE_ACCOUNT_JSON))
+    serviceAccountCredentials.set(file("keys/google_playstore_service_account.json"))
     track.set('alpha')
     defaultToAppBundles.set(true)
     artifactDir.set(file("../../build/app/outputs/bundle/release"))
