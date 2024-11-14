@@ -1,0 +1,61 @@
+# Will create PR only if new version in root pubspec exists
+
+name: Make example app release PR.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  pull-request-creation:
+    permissions:
+      pull-requests: write
+      contents: write
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v4
+
+      - name: Read version from root pubspec.yaml
+        id: read_version
+        run: |
+          version=$(grep '^version:' pubspec.yaml | awk '{print $2}')
+          echo "Version found: $version"
+          echo "pubspecVersion=$version" >> $GITHUB_ENV
+
+      - name: Update version in example pubspec.yaml
+        run: |
+          sed -i "s/^version:.*/version: ${{ env.pubspecVersion }} \\ automatically set by GH Action /" example/pubspec.yaml
+
+      - uses: actions4git/setup-git@v1
+        name: Setup git
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --exit-code example/pubspec.yaml; then
+            echo "No changes to commit"
+            echo "changes=false" >> $GITHUB_ENV
+          else
+            echo "Changes detected"
+            echo "changes=true" >> $GITHUB_ENV
+
+      - name: Create Pull Request
+        if: env.changes == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: $GITHUB_TOKEN
+          commit-message: ${{ format('chore:\ Example app release v{0}', env.pubspecVersion) }}
+          branch: "chore/example-release"
+          title: ${{ format('Release example app v{0}', env.pubspecVersion) }}
+          body: |
+            Make changes for Example app release.
+            - Update pubspec
+
+            **Merging this PR will trigger the release into the enterprise app stores.**
+          labels: |
+            exampleAppRelease:pending
+
+      - name: No changes to commit
+        if: env.changes == 'false'
+        run: echo "No new version detected."

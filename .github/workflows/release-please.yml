@@ -21,40 +21,6 @@ jobs:
           config-file: ci/release-please-config.json
           manifest-file: ci/.release-please-manifest.json
 
-  sync-version:
-    needs: release-please
-    if: ${{ needs.release-please.outputs.release-created }}
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Read version from root pubspec
-        id: read-version
-        uses: NiklasLehnfeld/flutter-version-number-action@v1
-        with:
-          file-path: ./pubspec.yaml
-
-      - name: Update pubspec in example app
-        uses: Dbono-dev/yaml-action@v1.0.3
-        with:
-          changes: |
-            {
-              "version": "${{ steps.read-version.outputs.version-number }}"
-            }
-          commentOutDevDependencies: "false"
-
-      - uses: actions4git/setup-git@v1
-        name: Setup git
-      - name: Commit changes
-        run: |
-          git add example/pubspec.yaml
-          git commit -m "Release v${{ steps.read-version.outputs.version-number }}"
-          git push
-
-  # match-example-app:
-
   # release-android-example-app:
   #   needs: release-please
   #   if: ${{ needs.release-please.outputs.release-created }}
