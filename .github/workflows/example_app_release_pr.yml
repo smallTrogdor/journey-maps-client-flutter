@@ -49,7 +49,7 @@ jobs:
           title: ${{ format('Release example app v{0}', steps.read_build_name.outputs.pubspec_build_name) }}
           body: |
             Make changes for Example app release.
-            - Update pubspec
+            - Update pubspec version to ${{ steps.read_build_name.outputs.pubspec_build_name }}+${{ steps.read_build_number.outputs.pubspec_build_number }}
 
             **Merging this PR will trigger the release into the enterprise app stores.**
           labels: |
