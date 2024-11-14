@@ -75,13 +75,12 @@ jobs:
   label-cleanup:
     needs: release-android-example-app
     runs-on: ubuntu-latest
+    env:
+      PR_NUMBER: ${{ github.event.number }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     permissions:
       contents: write
       pull-requests: write
     steps:
-      - run: gh pr edit --remove-label exampleAppRelease:pending
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: gh pr edit --add-label exampleAppRelease:released
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: gh pr edit $PR_NUMBER --remove-label exampleAppRelease:pending
+      - run: gh pr edit $PR_NUMBER --add-label exampleAppRelease:released
