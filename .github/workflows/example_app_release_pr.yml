@@ -16,36 +16,32 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v4
 
-      - name: Read version from root pubspec.yaml
-        id: read_version
+      - name: Read new build_name from root pubspec.yaml.
+        id: read_build_name
         run: |
           version=$(grep '^version:' pubspec.yaml | awk '{print $2}')
           echo "Version found: $version"
-          echo "pubspec_version=$version" >> $GITHUB_OUTPUT
+          echo "pubspec_build_name=$version" >> $GITHUB_OUTPUT
+
+      - name: Read current build_number from example pubspec.yaml
+        id: read_build_number
+        run: |
+          version=$(grep '^version:' example/pubspec.yaml | awk '{print $2}')
+          echo "Example version found: $version"
+          IFS='+' read -r build_name build_number <<< "$version"
+          new_build_number=$((build_number + 1))
+          echo "pubspec_build_number=$new_build_number" >> $GITHUB_OUTPUT
 
       - name: Update version in example pubspec.yaml
         run: |
-          sed -i "s/^version:.*/version: ${{ steps.read_version.pubspec_version }} # automatically set by GH Action /" example/pubspec.yaml
-
-      - uses: actions4git/setup-git@v1
-        name: Setup git
-
-      - name: Check for changes
-        id: check_changes
-        run: |
-          if [[ -n $(git status --porcelain) ]]; then
-              echo "has_changes=true" >> "$GITHUB_OUTPUT"; 
-          else
-              echo "has_changes=false" >> "$GITHUB_OUTPUT";
-          fi
+          sed -i "s/^version:.*/version: ${{ steps.read_build_name.outputs.pubspec_build_name }}+${{ steps.read_build_number.outputs.pubspec_build_number }} # automatically set by GH Action /" example/pubspec.yaml
 
       - name: Create Pull Request
-        if: steps.check_changes.outputs.has_changes
         uses: peter-evans/create-pull-request@v7
         with:
-          commit-message: ${{ format('chore:\ Example app release v{0}', steps.read_version.pubspec_version) }}
+          commit-message: ${{ format('chore:\ Example app release v{0}', steps.read_build_name.outputs.pubspec_build_name) }}
           branch: "chore/example-release"
-          title: ${{ format('Release example app v{0}', steps.read_version.pubspec_version) }}
+          title: ${{ format('Release example app v{0}', steps.read_build_name.outputs.pubspec_build_name) }}
           body: |
             Make changes for Example app release.
             - Update pubspec
@@ -53,7 +49,3 @@ jobs:
             **Merging this PR will trigger the release into the enterprise app stores.**
           labels: |
             exampleAppRelease:pending
-
-      - name: No changes to commit
-        if: env.changes == 'false'
-        run: echo "No new version detected."
