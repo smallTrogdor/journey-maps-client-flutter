@@ -21,11 +21,11 @@ jobs:
         run: |
           version=$(grep '^version:' pubspec.yaml | awk '{print $2}')
           echo "Version found: $version"
-          echo "pubspecVersion=$version" >> $GITHUB_ENV
+          echo "pubspec_version=$version" >> $GITHUB_OUTPUT
 
       - name: Update version in example pubspec.yaml
         run: |
-          sed -i "s/^version:.*/version: ${{ env.pubspecVersion }} \\ automatically set by GH Action /" example/pubspec.yaml
+          sed -i "s/^version:.*/version: ${{ steps.read_version.pubspec_version }} # automatically set by GH Action /" example/pubspec.yaml
 
       - uses: actions4git/setup-git@v1
         name: Setup git
@@ -33,21 +33,20 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          if git diff --exit-code example/pubspec.yaml; then
-            echo "No changes to commit"
-            echo "changes=false" >> $GITHUB_ENV
+          if [[ -n $(git status --porcelain) ]]; then
+              echo "has_changes=true" >> "$GITHUB_OUTPUT"; 
           else
-            echo "Changes detected"
-            echo "changes=true" >> $GITHUB_ENV
+              echo "has_changes=false" >> "$GITHUB_OUTPUT";
+          fi
 
       - name: Create Pull Request
-        if: env.changes == 'true'
+        if: steps.check_changes.outputs.has_changes
         uses: peter-evans/create-pull-request@v7
         with:
           token: $GITHUB_TOKEN
-          commit-message: ${{ format('chore:\ Example app release v{0}', env.pubspecVersion) }}
+          commit-message: ${{ format('chore:\ Example app release v{0}', steps.read_version.pubspec_version) }}
           branch: "chore/example-release"
-          title: ${{ format('Release example app v{0}', env.pubspecVersion) }}
+          title: ${{ format('Release example app v{0}', steps.read_version.pubspec_version) }}
           body: |
             Make changes for Example app release.
             - Update pubspec
