@@ -1,6 +1,6 @@
 # Journey Maps Client Flutter
 
-This package allows you to easily incorporate SBB maps into your Flutter application. T
+This package allows you to easily incorporate SBB maps into your Flutter application. Te
 
 <p align="center"><img src="example/gallery/main.png" alt="iOS and Android example showcases" width="90%"></p>
 
