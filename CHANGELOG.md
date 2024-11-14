@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/smallTrogdor/journey-maps-client-flutter/compare/2.4.0...2.5.0) (2024-11-14)
+
+
+### Features
+
+* make fake Feature ([e43b081](https://github.com/smallTrogdor/journey-maps-client-flutter/commit/e43b081af44dec086789264e6e0b383183a5e656))
+
 ## [2.4.0](https://github.com/smallTrogdor/journey-maps-client-flutter/compare/v2.3.1...2.4.0) (2024-11-14)
 
 
