@@ -3,11 +3,13 @@
   "packages": {
     ".": {
       "package-name": "sbb_maps_flutter",
-      "release-type": "dart"
+      "release-type": "dart",
+      "component": "root"
     },
     "example": {
       "package-name": "sbb_maps_flutter_example",
-      "release-type": "dart"
+      "release-type": "dart",
+      "component": "example"
     }
   },
   "include-v-in-tag": false,
@@ -17,8 +19,8 @@
   "plugins": [
     {
       "type": "linked-versions",
-      "groupName": "ExampleAppAndLib",
-      "components": ["sbb_maps_flutter", "sbb_maps_flutter_example"]
+      "groupName": "RootAndExample",
+      "components": ["root", "example"]
     }
   ]
 }
